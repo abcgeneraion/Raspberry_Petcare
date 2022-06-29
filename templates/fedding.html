@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>投喂系统</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="icon" type="image/x-icon" href="../static/fav.ico">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style2.css')}}">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="display-4">家庭宠物投喂系统</h1>
+        <br>
+        {% for message in get_flashed_messages() %}
+        <div class="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+        <form method="post" action="{{ url_for('livefeed') }}">
+        {{ live.csrf_token }}
+        {{ live.qulity.label}}
+         {% if live.qulity.errors %}
+            {{ live.qulity(class='form-control is-invalid') }}
+
+                        <div class="invalid-feedback">
+                            {{ live.qulity.errors[-1] }}
+                        </div>
+
+        {% else %}
+            {{ live.qulity(class='form-control') }}
+        {% endif %}
+        {{ live.submit }}
+        </form>
+        <form method="post" action="{{ url_for('ontimefeed') }}">
+        {{ ontime.csrf_token }}
+        {{ ontime.data.label }}
+        <p>剩余食量:{{ bar() }}</p>
+        {% if ontime.data.errors %}
+            {{ ontime.data}}
+            <div class="invalid-feedback">
+                <h5 class="h5">请输入正确时间格式，例如12:00</h5>
+            </div>
+        {% else %}
+            {{ ontime.data }}
+        {% endif %}
+        {{ ontime.qulity.label}}
+         {% if ontime.qulity.errors %}
+            {{ ontime.qulity(class='form-control is-invalid') }}
+
+                        <div class="invalid-feedback">
+                            {{ ontime.qulity.errors[-1] }}
+                        </div>
+
+        {% else %}
+            {{ ontime.qulity(class='form-control') }}
+        {% endif %}
+        {{ ontime.submit2 }}
+        </form>
+    <h4>{{ datas|length }} 每日投喂数据:</h4>
+
+        <table class="table" border="2px">
+            <tr>
+                <td width="10" height="8">序号</td>
+                <td>投喂时间</td>
+                <td>投喂质量</td>
+            </tr>
+            {% for note in datas %}
+            <tr>
+                <td width="10" height="8">{{ loop.index }}</td>
+                <td>{{ note.time }}</td>
+                <td>{{ note.qulity }}
+                <form method="post" action="{{ url_for('delete_date', note_id=note.id) }}">
+                {{ form.csrf_token }}
+                {{ form.submit(class='btn') }}
+            </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</body>
+</html>

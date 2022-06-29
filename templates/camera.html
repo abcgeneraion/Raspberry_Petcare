@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>投喂系统</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="icon" type="image/x-icon" href="../static/fav.ico">
+    <link rel="stylesheet" href='../static/style.css'/>
+
+    <script>
+        $(function(){
+        $("button").click(function(){
+        $.post("/cmd",{'value':this.id},function(data,status){});
+        });
+        });
+    </script>
+  </head>
+  <body>
+    <h1 class='t'>家庭宠物投喂系统</h1>
+    {% for message in get_flashed_messages() %}
+        <div class="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h3 class='i'>
+    <div  class="d1">
+        <div>
+            <button id="up" class="btn btn-lgg btn-primary glyphicon glyphicon-circle-arrow-up"></button>
+        </div>
+        <div>
+            <button id='left' class="btn btn-lgg btn-primary glyphicon glyphicon-circle-arrow-left"></button>
+            <button id='stop' class="btn btn-lgg btn-primary glyphicon glyphicon-stop"></button>
+            <button id='right' class="btn btn-lgg btn-primary glyphicon glyphicon-circle-arrow-right"></button>
+        </div>
+        <div>
+            <button id='down' class="btn btn-lgg btn-primary glyphicon glyphicon-circle-arrow-down"></button>
+        </div>
+    </div>
+    <div class='d2'><img src="{{ url_for('video_feed') }}" width="150%" float= "right";></div>
+    </h3>
+    <ul>
+            <li><a href="{{ url_for('livefeed') }}">进入喂养</a></li>
+    </ul>
+
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
